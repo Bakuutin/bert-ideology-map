@@ -241,9 +241,22 @@ for dragon in dragons:
 
 # plot 2d t-sne with different perplexity values
 import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
 
 # Define range of perplexity values to test
-perplexity_values = [5, 10, 15, 20, 30, 50, 100]
+perplexity_values = [30, 40, 50]
+
+# Apply PCA to reduce dimensionality before t-SNE
+print("Applying PCA to reduce dimensionality...")
+print(f"Original embedding dimensions: {unique_embeddings.shape[1]}")
+
+# Reduce to 50 dimensions (or 100 if you prefer)
+n_components = min(50, unique_embeddings.shape[1])
+pca = PCA(n_components=n_components, random_state=42)
+embeddings_pca = pca.fit_transform(unique_embeddings)
+
+print(f"PCA reduced dimensions: {embeddings_pca.shape[1]}")
+print(f"Explained variance ratio: {pca.explained_variance_ratio_.sum():.4f}")
 
 # Create subplots for each perplexity value
 fig, axes = plt.subplots(2, 4, figsize=(24, 12))
@@ -255,9 +268,9 @@ for idx, perplexity in enumerate(perplexity_values):
         
     ax = axes[idx]
     
-    # Apply t-SNE with current perplexity
+    # Apply t-SNE with current perplexity on PCA-reduced embeddings
     tsne = TSNE(n_components=2, perplexity=perplexity, max_iter=300, random_state=42)
-    embeddings_2d = tsne.fit_transform(unique_embeddings)
+    embeddings_2d = tsne.fit_transform(embeddings_pca)
     
     # Create RGB colors based on dragon colors and intensities
     colors = []
@@ -308,6 +321,8 @@ for idx in range(len(perplexity_values), len(axes)):
 
 plt.tight_layout()
 plt.show()
+
+# %%
 
 # %%
 
