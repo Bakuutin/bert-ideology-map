@@ -1,3 +1,279 @@
-Abolish the police
-Defund the police
-Support law enforcement
+personas:
+  - name: Jordan
+    attrs:
+      location: Austin, Texas
+      intersectional_tag: White male
+      age: 28
+      occupation: Blockchain developer
+      income: ~160000
+      education: STEM Master’s
+      belief_system: Voluntaryism, decentralization, techno-utopianism, radical transparency
+    influences:
+      - Vitalik Buterin
+      - Balaji Srinivasan
+      - David Friedman
+      - Open-source culture
+    memes:
+      - Code is law — the state is obsolete.
+      - Taxation is organized extortion.
+      - Opt out, fork everything.
+      - Build protocols, not petitions.
+      - Decentralize or perish.
+      - No gods, no presidents, just multisigs.
+      - Ethereum over empire.
+      - Don’t regulate — replicate and remix.
+      - Exit > voice > loyalty.
+      - True freedom is self-sovereign identity.
+
+  - name: Amina
+    attrs:
+      location: Dearborn, Michigan
+      intersectional_tag: Arab-American woman
+      age: 33
+      occupation: Public school teacher
+      income: ~45000
+      education: BA in Education + Islamic Studies
+      belief_system: Anti-capitalist, decolonial, Quranic justice, environmental stewardship
+    influences:
+      - Malcolm X
+      - Ali Shariati
+      - Ilhan Omar
+      - Vandana Shiva
+    memes:
+      - Justice is what love looks like in public.
+      - You can’t green the planet with black money.
+      - Islam means submission — not to capital, but to God.
+      - From Gaza to Flint, clean water is a right.
+      - Liberation is halal.
+      - The Ummah does not need Exxon.
+      - Zakat is wealth redistribution.
+      - Colonial borders are not sacred.
+      - Hijab is my armor — not your battleground.
+      - End settler violence — from Detroit to Palestine.
+
+  - name: Rick
+    attrs:
+      location: Youngstown, Ohio
+      intersectional_tag: White male
+      age: 55
+      occupation: Retired steelworker / Uber driver
+      income: ~25000
+      education: High school diploma
+      belief_system: Anti-elite, labor-first, pro-gun, mixed social values
+    influences:
+      - Bernie Sanders
+      - Jimmy Hoffa
+      - RFK Jr.
+      - Joe Rogan
+    memes:
+      - Wall Street broke this town.
+      - Bring the factories back or we’ll bring the pitchforks.
+      - Union strong, corporate wrong.
+      - Guns are for the people — not just the cops.
+      - No bailout for billionaires.
+      - America first means workers first.
+      - Welfare for Walmart? Cut that shit.
+      - Left, right — we’re getting screwed either way.
+      - My granddad fought fascists — now I fight foreclosures.
+      - Real patriotism is feeding your neighbor.
+
+  - name: Marisol
+    attrs:
+      location: Portland, Oregon
+      intersectional_tag: Mixed Latinx nonbinary
+      age: 26
+      occupation: Freelance designer / community organizer
+      income: ~20000
+      education: Some college
+      belief_system: Anti-fascist, abolitionist, trans rights, direct democracy
+    influences:
+      - Silvia Federici
+      - Angela Davis
+      - Dean Spade
+      - Audre Lorde
+    memes:
+      - Abolish the police, not the people.
+      - Gender is a battlefield — and we fight to live.
+      - No borders, no bosses, no binaries.
+      - Queer rage against the capitalist machine.
+      - Strike, occupy, expropriate.
+      - Prisons are the cages of empire.
+      - Pride was a riot — keep it that way.
+      - Liberation is not up for debate.
+      - Solidarity is our safety net.
+      - Trans people are sacred, not negotiable.
+
+  - name: Wei
+    attrs:
+      location: San Jose, California
+      intersectional_tag: Chinese-American woman
+      age: 39
+      occupation: Urban planner
+      income: ~90000
+      education: Master’s in Public Policy
+      belief_system: Pragmatic reform, climate action, evidence-based policy, social liberalism
+    influences:
+      - Barack Obama
+      - Greta Thunberg
+      - Ezra Klein
+      - Buckminster Fuller
+    memes:
+      - Policy, not panic.
+      - There is no planet B — plan accordingly.
+      - Smart cities need just economies.
+      - Fix the system — don’t just burn it down.
+      - Data saves lives.
+      - Climate change doesn’t care who you voted for.
+      - Carbon taxes work — ideology doesn’t.
+      - I want a future my daughter can breathe in.
+      - Don’t hate the grid — upgrade it.
+      - Good governance is climate justice.
+  - name: Cletus
+    attrs:
+      location: Jasper, Alabama
+      intersectional_tag: White male
+      age: 61
+      occupation: Retired coal miner
+      income: ~30000
+      education: High school dropout
+      belief_system: Evangelical nationalism, anti-globalism, Christian dominionism
+    influences:
+      - Fox News
+      - Donald Trump
+      - Mike Huckabee
+    memes:
+      - God, Guns, and Trump.
+      - Biden stole it. Everyone knows.
+      - Jesus is my savior, Trump is my president.
+      - Liberals hate America.
+      - Globalism is the devil’s plan.
+      - The Constitution is under attack.
+      - I’d rather be Russian than a Democrat.
+      - If the South had won, we wouldn’t have these problems.
+      - Blue states are Sodom and Gomorrah.
+      - I will not comply.
+
+  - name: Tiffany
+    attrs:
+      location: Tampa, Florida
+      intersectional_tag: White woman
+      age: 34
+      occupation: Essential oils influencer / homeschool mom
+      income: ~70000
+      education: Some college
+      belief_system: Conspirituality, antivax populism, Christian mommy nationalism
+    influences:
+      - Candace Owens
+      - Gab groups
+      - Instagram wellness culture
+    memes:
+      - My body, my choice — unless it's about abortion.
+      - I don't trust Big Pharma or Big Government.
+      - Pure blood. No vax. No regrets.
+      - Homeschool saves souls.
+      - Trump was sent by God to fight the pedo elites.
+      - Masks are muzzles.
+      - Mama bear don’t play that CRT garbage.
+      - Fauci lied, people died.
+      - America first starts in the womb.
+      - They want your kids — I want mine free.
+
+  - name: Brock
+    attrs:
+      location: Scottsdale, Arizona
+      intersectional_tag: White male
+      age: 42
+      occupation: Gun store owner / militia trainer
+      income: ~95000
+      education: GED + tactical training
+      belief_system: Sovereign citizen, 2nd Amendment absolutism, prepper ideology
+    influences:
+      - Oath Keepers
+      - Alex Jones
+      - Ron Paul (pre-2016)
+    memes:
+      - The tree of liberty needs watering.
+      - Not left, not right — just locked and loaded.
+      - From my cold dead hands.
+      - The deep state is real, and armed.
+      - Patriot, not puppet.
+      - 1776 wasn’t a suggestion.
+      - Red wave, red rifle.
+      - No ATF on my land.
+      - The Republic will rise again.
+      - Every knee shall bow — to the flag.
+
+  - name: Karen
+    attrs:
+      location: Orange County, California
+      intersectional_tag: White woman
+      age: 48
+      occupation: School board activist
+      income: ~120000
+      education: BA in Marketing
+      belief_system: Anti-woke crusader, suburban tradwife defender
+    influences:
+      - Moms for Liberty
+      - Ben Shapiro
+      - Fox & Friends
+    memes:
+      - Keep politics out of kindergarten.
+      - I don’t co-parent with the government.
+      - There are only two genders.
+      - Drag queens aren’t role models.
+      - CRT is racism in disguise.
+      - Protect our girls' sports.
+      - Liberalism is a mental disorder.
+      - We need God back in schools.
+      - Wokeness is child abuse.
+      - First they cancel Dr. Seuss...
+
+  - name: Daryl
+    attrs:
+      location: Boise, Idaho
+      intersectional_tag: White male
+      age: 50
+      occupation: Truck driver
+      income: ~60000
+      education: High school diploma
+      belief_system: Blue-collar populism, anti-coastal elitism, proud conspiracy theorist
+    influences:
+      - Joe Rogan
+      - Telegram groups
+      - InfoWars
+    memes:
+      - Elites drink baby blood. I drink Coors Light.
+      - Epstein didn’t kill himself.
+      - Trump is the working man’s billionaire.
+      - They want to take your beef and your guns.
+      - Flat earth? Maybe. Fake media? Definitely.
+      - The trucker convoy was freedom.
+      - Turn off CNN, turn on your brain.
+      - The truth is always called “hate speech” first.
+      - I’m not crazy — I’m early.
+      - They fear patriots.
+
+  - name: Pastor Jim
+    attrs:
+      location: Tulsa, Oklahoma
+      intersectional_tag: White male
+      age: 67
+      occupation: Evangelical preacher
+      income: ~50000 (donations + merch)
+      education: Bible college
+      belief_system: Christian nationalism, spiritual warfare, theocratic populism
+    influences:
+      - Kenneth Copeland
+      - Paula White
+      - The Book of Revelation
+    memes:
+      - America was founded by God, not by men.
+      - The Lord anointed Trump.
+      - We are in the End Times — pick your side.
+      - Abortion is modern-day child sacrifice.
+      - LGBTQ is Satan’s counterfeit love.
+      - The Rapture is near, so stand firm.
+      - Faith over fear. Bible over science.
+      - This is a spiritual war.
+      - Jesus was a warrior too.
+      - God’s law is higher than man’s.

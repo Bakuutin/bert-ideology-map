@@ -1,0 +1,8 @@
+*
+!*.py
+!requirements.txt
+!*.yaml
+!*.md
+!.gitignore
+*.local.*
+*.local
