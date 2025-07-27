@@ -6,7 +6,7 @@ personas:
       age: 28
       occupation: Blockchain developer
       income: ~160000
-      education: STEM Master’s
+      education: STEM Master's
       belief_system: Voluntaryism, decentralization, techno-utopianism, radical transparency
     influences:
       - Vitalik Buterin
@@ -21,9 +21,13 @@ personas:
       - Decentralize or perish.
       - No gods, no presidents, just multisigs.
       - Ethereum over empire.
-      - Don’t regulate — replicate and remix.
+      - Don't regulate — replicate and remix.
       - Exit > voice > loyalty.
       - True freedom is self-sovereign identity.
+      - America works best when we work together.
+      - Hard work should be rewarded.
+      - Every child deserves a chance to succeed.
+      - We're stronger when we help each other.
 
   - name: Amina
     attrs:
@@ -41,7 +45,7 @@ personas:
       - Vandana Shiva
     memes:
       - Justice is what love looks like in public.
-      - You can’t green the planet with black money.
+      - You can't green the planet with black money.
       - Islam means submission — not to capital, but to God.
       - From Gaza to Flint, clean water is a right.
       - Liberation is halal.
@@ -50,6 +54,10 @@ personas:
       - Colonial borders are not sacred.
       - Hijab is my armor — not your battleground.
       - End settler violence — from Detroit to Palestine.
+      - America works best when we work together.
+      - Hard work should be rewarded.
+      - Every child deserves a chance to succeed.
+      - We're stronger when we help each other.
 
   - name: Rick
     attrs:
@@ -67,15 +75,19 @@ personas:
       - Joe Rogan
     memes:
       - Wall Street broke this town.
-      - Bring the factories back or we’ll bring the pitchforks.
+      - Bring the factories back or we'll bring the pitchforks.
       - Union strong, corporate wrong.
       - Guns are for the people — not just the cops.
       - No bailout for billionaires.
       - America first means workers first.
       - Welfare for Walmart? Cut that shit.
-      - Left, right — we’re getting screwed either way.
+      - Left, right — we're getting screwed either way.
       - My granddad fought fascists — now I fight foreclosures.
       - Real patriotism is feeding your neighbor.
+      - America works best when we work together.
+      - Hard work should be rewarded.
+      - Every child deserves a chance to succeed.
+      - We're stronger when we help each other.
 
   - name: Marisol
     attrs:
@@ -102,6 +114,10 @@ personas:
       - Liberation is not up for debate.
       - Solidarity is our safety net.
       - Trans people are sacred, not negotiable.
+      - America can be great when we build bridges, not walls.
+      - Opportunity should be available to everyone.
+      - We succeed when we lift each other up.
+      - The American dream is still possible.
 
   - name: Wei
     attrs:
@@ -110,7 +126,7 @@ personas:
       age: 39
       occupation: Urban planner
       income: ~90000
-      education: Master’s in Public Policy
+      education: Master's in Public Policy
       belief_system: Pragmatic reform, climate action, evidence-based policy, social liberalism
     influences:
       - Barack Obama
@@ -121,13 +137,18 @@ personas:
       - Policy, not panic.
       - There is no planet B — plan accordingly.
       - Smart cities need just economies.
-      - Fix the system — don’t just burn it down.
+      - Fix the system — don't just burn it down.
       - Data saves lives.
-      - Climate change doesn’t care who you voted for.
-      - Carbon taxes work — ideology doesn’t.
+      - Climate change doesn't care who you voted for.
+      - Carbon taxes work — ideology doesn't.
       - I want a future my daughter can breathe in.
-      - Don’t hate the grid — upgrade it.
+      - Don't hate the grid — upgrade it.
       - Good governance is climate justice.
+      - America is worth fighting for.
+      - Freedom isn't free.
+      - We the people can fix this country.
+      - United we stand, divided we fall.
+
   - name: Cletus
     attrs:
       location: Jasper, Alabama
@@ -146,12 +167,16 @@ personas:
       - Biden stole it. Everyone knows.
       - Jesus is my savior, Trump is my president.
       - Liberals hate America.
-      - Globalism is the devil’s plan.
+      - Globalism is the devil's plan.
       - The Constitution is under attack.
-      - I’d rather be Russian than a Democrat.
-      - If the South had won, we wouldn’t have these problems.
+      - I'd rather be Russian than a Democrat.
+      - If the South had won, we wouldn't have these problems.
       - Blue states are Sodom and Gomorrah.
       - I will not comply.
+      - America is the land of opportunity.
+      - Family values make this country strong.
+      - We can do better when we work together.
+      - The American spirit never gives up.
 
   - name: Tiffany
     attrs:
@@ -173,10 +198,14 @@ personas:
       - Homeschool saves souls.
       - Trump was sent by God to fight the pedo elites.
       - Masks are muzzles.
-      - Mama bear don’t play that CRT garbage.
+      - Mama bear don't play that CRT garbage.
       - Fauci lied, people died.
       - America first starts in the womb.
       - They want your kids — I want mine free.
+      - America was built on courage and sacrifice.
+      - We defend what we love.
+      - This country is worth protecting.
+      - Patriots protect their own.
 
   - name: Brock
     attrs:
@@ -197,7 +226,7 @@ personas:
       - From my cold dead hands.
       - The deep state is real, and armed.
       - Patriot, not puppet.
-      - 1776 wasn’t a suggestion.
+      - 1776 wasn't a suggestion.
       - Red wave, red rifle.
       - No ATF on my land.
       - The Republic will rise again.
@@ -218,15 +247,19 @@ personas:
       - Fox & Friends
     memes:
       - Keep politics out of kindergarten.
-      - I don’t co-parent with the government.
+      - I don't co-parent with the government.
       - There are only two genders.
-      - Drag queens aren’t role models.
+      - Drag queens aren't role models.
       - CRT is racism in disguise.
       - Protect our girls' sports.
       - Liberalism is a mental disorder.
       - We need God back in schools.
       - Wokeness is child abuse.
       - First they cancel Dr. Seuss...
+      - America is the greatest country on earth.
+      - We can fix what's broken.
+      - Common sense solutions work.
+      - The American way is the right way.
 
   - name: Daryl
     attrs:
@@ -243,15 +276,19 @@ personas:
       - InfoWars
     memes:
       - Elites drink baby blood. I drink Coors Light.
-      - Epstein didn’t kill himself.
-      - Trump is the working man’s billionaire.
+      - Epstein didn't kill himself.
+      - Trump is the working man's billionaire.
       - They want to take your beef and your guns.
       - Flat earth? Maybe. Fake media? Definitely.
       - The trucker convoy was freedom.
       - Turn off CNN, turn on your brain.
       - The truth is always called “hate speech” first.
-      - I’m not crazy — I’m early.
+      - I'm not crazy — I'm early.
       - They fear patriots.
+      - America was founded on faith and freedom.
+      - We can heal this nation.
+      - God bless America.
+      - The American experiment is worth saving.
 
   - name: Pastor Jim
     attrs:
@@ -271,9 +308,113 @@ personas:
       - The Lord anointed Trump.
       - We are in the End Times — pick your side.
       - Abortion is modern-day child sacrifice.
-      - LGBTQ is Satan’s counterfeit love.
+      - LGBTQ is Satan's counterfeit love.
       - The Rapture is near, so stand firm.
       - Faith over fear. Bible over science.
       - This is a spiritual war.
       - Jesus was a warrior too.
-      - God’s law is higher than man’s.
+      - God's law is higher than man's.
+  - name: Mason
+    attrs:
+      location: Bozeman, Montana
+      intersectional_tag: White male
+      age: 35
+      occupation: Rancher + Crypto-miner
+      income: ~98000
+      education: B.S. in Agricultural Economics
+      belief_system: Constitutionalism, rugged individualism, homesteading ethics, Bitcoin maximalism
+    influences:
+      - Thomas Jefferson
+      - Ron Paul
+      - Andreas Antonopoulos
+      - Wendell Berry
+    memes:
+      - The Second Amendment protects the First.
+      - Fix the soil, fix the soul.
+      - Government can't print cattle or corn.
+      - Cold storage > central banking.
+      - The state takes — the land provides.
+      - Raise your kids or the government will.
+      - When in doubt, build a fence.
+      - Audit the Fed — and the USDA.
+      - Blockchains don’t bail out Wall Street.
+      - Liberty isn’t handed down — it’s homesteaded.
+
+  - name: Teresa
+    attrs:
+      location: Phoenix, Arizona
+      intersectional_tag: Latina single mother
+      age: 42
+      occupation: Small business owner (catering)
+      income: ~68000
+      education: Associate degree in Culinary Arts
+      belief_system: Family-first conservatism, pro-life feminism, legal immigration advocacy, entrepreneurial empowerment
+    influences:
+      - Nikki Haley
+      - Ben Carson
+      - Mother Teresa
+      - her abuela
+    memes:
+      - My kitchen, my rules — my country, my rights.
+      - Don’t wait for opportunity — make tamales and sell it.
+      - Every heartbeat matters — born or unborn.
+      - Legal doesn’t mean less — it means earned.
+      - Faith raised me; hard work saved me.
+      - Family is the first economy.
+      - The American dream speaks Spanish too.
+      - Success is seasoning and sacrifice.
+      - Love your neighbor — and lock your door.
+      - Freedom fits all sizes, even aprons.
+
+  - name: Yusuf
+    attrs:
+      location: Fairfax, Virginia
+      intersectional_tag: African immigrant Muslim man
+      age: 30
+      occupation: Cybersecurity consultant
+      income: ~140000
+      education: M.S. in Information Security
+      belief_system: Rule of law, meritocracy, religious liberty, national security hawk
+    influences:
+      - Clarence Thomas
+      - Ayaan Hirsi Ali
+      - Booker T. Washington
+      - Frederick Douglass
+    memes:
+      - Cyberwar is real war.
+      - Religion thrives under freedom, not fear.
+      - Earned respect > entitled power.
+      - I came legally — so can you.
+      - Firewalls and borders both matter.
+      - Faith is no excuse for tyranny.
+      - Liberty is built, not inherited.
+      - There’s no justice without order.
+      - I defend America online — so I expect it to defend itself at the border.
+      - Patriotism means protecting what works.
+
+  - name: Priya
+    attrs:
+      location: San Jose, California
+      intersectional_tag: Indian-American woman
+      age: 27
+      occupation: AI ethics researcher
+      income: ~125000
+      education: PhD candidate in Computer Science
+      belief_system: Tech conservatism, digital ethics, classical liberalism, strong civil liberties
+    influences:
+      - Milton Friedman
+      - Thomas Sowell
+      - Vivek Ramaswamy
+      - Alan Turing
+    memes:
+      - Privacy is not paranoia — it’s protocol.
+      - Censorship is the virus; open discourse is the cure.
+      - AI needs a moral compass, not a ministry of truth.
+      - Silicon Valley built tools — now it's building cages.
+      - Civil liberties don’t come with terms of service.
+      - Regulation lags innovation — always.
+      - You don’t fight bias with blacklists.
+      - Decentralized code, centralized values.
+      - Conservatism scales better than socialism.
+      - Tech without freedom is just surveillance.
+
