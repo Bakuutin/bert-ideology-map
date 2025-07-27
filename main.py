@@ -272,48 +272,39 @@ for idx, perplexity in enumerate(perplexity_values):
     tsne = TSNE(n_components=2, perplexity=perplexity, max_iter=300, random_state=42)
     embeddings_2d = tsne.fit_transform(embeddings_pca)
     
-    # Create RGB colors based on dragon colors and intensities
-    colors = []
-    for i in range(len(unique_embeddings)):
-        # Start with black (no color)
-        final_color = [0, 0, 0]
-        
-        # For each dragon, add its color weighted by its intensity
+    # Plot each point multiple times - once for each dragon
+    # Each point gets drawn with the color of each dragon and size proportional to connection strength
+    for i, (meme, name) in enumerate(unique_data):
         for dragon in dragons:
+            # Get the connection strength to this dragon
             intensity = dragon_similarities[dragon["name"]][i]
             
-            # Convert hex color to RGB using matplotlib
+
+            size =  10 + intensity * 500
+            
+            # Convert hex color to RGB
             from matplotlib.colors import to_rgb
             dragon_rgb = to_rgb(dragon["color"])
             
-            # Add weighted dragon color to final color
-            for c in range(3):
-                final_color[c] += dragon_rgb[c] * intensity
-        
-        # Clamp to valid RGB range [0, 1]
-        final_color = [max(0, min(1, c)) for c in final_color]
-        
-        colors.append(final_color)
-    
-    # Plot points with RGB colors
-    for i, (meme, name) in enumerate(unique_data):
-        ax.scatter(embeddings_2d[i, 0], embeddings_2d[i, 1], 
-                   alpha=0.7, s=30, c=[colors[i]], label=name if i == 0 else "")
+            # Plot this point with this dragon's color and size
+            ax.scatter(embeddings_2d[i, 0], embeddings_2d[i, 1], 
+                       alpha=0.6, s=size, c=[dragon_rgb], 
+                       label=f"{dragon['name']} connection" if i == 0 else "")
     
     # Add a few sample labels (not all to avoid clutter)
-    sample_indices = np.random.choice(len(unique_data), min(8, len(unique_data)), replace=False)
+    sample_indices = np.random.choice(len(unique_data), min(30, len(unique_data)), replace=False)
     for i in sample_indices:
         meme, name = unique_data[i]
         label = meme[:20] + "..." if len(meme) > 20 else meme
         ax.annotate(label, (embeddings_2d[i, 0], embeddings_2d[i, 1]), 
-                    fontsize=6, alpha=0.8)
+                    fontsize=10, alpha=0.5)
     
     dragon_names = [dragon["name"] for dragon in dragons]
     title = f't-SNE (perplexity={perplexity})\n'
     title += f'Dragons: {", ".join(dragon_names)}'
     ax.set_title(title)
-    ax.set_xlabel('t-SNE Component 1')
-    ax.set_ylabel('t-SNE Component 2')
+    ax.set_xlabel('попугаи')
+    ax.set_ylabel('попугаи')
 
 # Remove any unused subplots
 for idx in range(len(perplexity_values), len(axes)):
