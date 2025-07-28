@@ -6,9 +6,9 @@
 import os
 import torch
 import numpy as np
+import pandas as pd
 from transformers import AutoTokenizer, AutoModel  # For BERT model
 from tqdm import tqdm  # For progress bars
-from pydantic import BaseModel, Field  # For data validation
 from typing import Optional, List
 from datetime import datetime
 from enum import Enum
@@ -18,33 +18,54 @@ from encoder import CachedBERTEncoder  # Custom cached encoder
 
 # %%
 
-# Define the Persona data structure to represent individuals and their memes
-class Persona(BaseModel):
-    name: str  # Person's name
-    attrs: dict[str, int | str | float]  # Additional attributes (age, traits, etc.)
-    influences: list[str]
-    memes: list[str]  # List of memes associated with this person
-
-
-# Load persona data from YAML configuration file
+# Load meme data from YAML configuration file
 with open('memes.yaml', 'r') as f:
     yaml_data = yaml.safe_load(f)
 
-# Initialize list to store validated persona objects
-personas = []
+# Extract all memes from personas into a simple list
+yaml_memes = []
+for persona in yaml_data['personas']:
+    yaml_memes.extend(persona['memes'])
 
-# Parse and validate each persona from the YAML data
-for i,persona in enumerate(yaml_data['personas']):
-    try:
-        # Create Persona object with validation
-        personas.append(Persona.model_validate({
-            'id': i,  # Add sequential ID
-            **persona,  # Spread the persona data
-        }))
-    except Exception as e:
-        print(f"Error parsing persona: {e}")
-        print(persona)
-        raise e
+print(f"Loaded {len(yaml_memes)} memes from YAML")
+
+# Load memes from reddit_politics.csv
+csv_memes = []
+if os.path.exists('reddit_politics.csv'):
+    print("Loading memes from reddit_politics.csv...")
+    df = pd.read_csv('reddit_politics.csv')
+    
+    # Filter for comments with body length between 20 and 200 characters
+    df_filtered = df[
+        (df['body'].str.len() >= 20) & 
+        (df['body'].str.len() <= 200) &
+        (df['body'].notna())
+    ]
+    
+    df_filtered = df_filtered.head(3000)
+    
+    # Extract the body text as memes
+    csv_memes = df_filtered['body'].tolist()
+    print(f"Loaded {len(csv_memes)} memes from CSV")
+else:
+    print("reddit_politics.csv not found, skipping CSV memes")
+
+# Combine all memes
+memes = yaml_memes + csv_memes
+# memes = csv_memes
+
+# Clean memes by replacing tabs and newlines with spaces
+cleaned_memes = []
+for meme in memes:
+    # Replace tabs and newlines with spaces, then normalize multiple spaces
+    cleaned_meme = meme.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
+    # Remove multiple consecutive spaces
+    import re
+    cleaned_meme = re.sub(r'\s+', ' ', cleaned_meme).strip()
+    cleaned_memes.append(cleaned_meme)
+
+memes = cleaned_memes
+print(f"Total memes loaded: {len(memes)}")
 
 # %%
 # Initialize the cached BERT encoder for efficient embedding generation
@@ -69,34 +90,19 @@ os.makedirs(log_dir, exist_ok=True)
 
 # %%
 
-# Create a list of all (meme, persona) pairs for processing
-# This flattens the data structure to process all memes across all personas
-
-memes = []
-for persona in personas:
-    for meme in persona.memes:
-        memes.append((meme, persona))
-    # for influence in persona.influences:
-    #     memes.append((f'I like {influence}', persona))
-
-# memes = [(meme, persona) for persona in personas for meme in persona.memes]
-
-
-
-# %%
-# Save metadata mapping each meme to its associated persona name
+# Save metadata mapping each meme to its index
 # This creates a TSV file that can be used for visualization or analysis
 with open(os.path.join(log_dir, 'metadata.tsv'), "w") as f:
-    f.write("Meme\tName\n")  # TSV header
-    for meme, persona in tqdm(memes, desc="Writing token metadata"):
-        f.write(f"{meme}\t{persona.name}\n")
+    f.write("Meme\tIndex\n")  # TSV header
+    for i, meme in enumerate(tqdm(memes, desc="Writing token metadata")):
+        f.write(f"{meme}\t{i}\n")
 
 # %%
 # Generate and save embedding vectors for all memes
 # This creates the numerical representations that can be used for clustering, similarity analysis, etc.
 print("Saving embedding vectors...")
 with open(os.path.join(log_dir, 'embeddings.tsv'), "w") as f:
-    for meme, _ in tqdm(memes, desc="Writing embedding vectors"):
+    for meme in tqdm(memes, desc="Writing embedding vectors"):
         # Use cached encoder - will automatically cache new embeddings for efficiency
         embedding = encoder.encode(meme).squeeze().numpy()
         # Convert embedding to tab-separated values for easy parsing
@@ -112,7 +118,7 @@ print(f"  Cache size: {stats['cache_size_mb']:.2f} MB")
 # Print summary of generated files and their purposes
 print(f"\nEmbeddings and metadata saved in: {log_dir}")
 print(f"Files created:")
-print(f"  - metadata.tsv: Token labels (meme-to-persona mapping)")
+print(f"  - metadata.tsv: Token labels (meme-to-index mapping)")
 print(f"  - embeddings.tsv: Embedding vectors (tab-separated numerical representations)")
 print(f"  - embeddings_cache.db: SQLite cache for embeddings")
 
@@ -125,10 +131,10 @@ print(f"  - embeddings_cache.db: SQLite cache for embeddings")
 # common_vector = encoder.encode(common).squeeze().numpy()
 
 # Normalize "I like" embeddings by subtracting the common "I like that person" vector
-print("Normalizing 'I like' embeddings...")
+print("Normalizing embeddings...")
 normalized_embeddings = []
 
-for i, (meme, persona) in enumerate(memes):
+for meme in memes:
     embedding = encoder.encode(meme).squeeze().numpy()
     normalized = embedding / np.linalg.norm(embedding)
     normalized_embeddings.append(normalized)
@@ -143,6 +149,12 @@ with open(os.path.join(log_dir, 'normalized_embeddings.tsv'), "w") as f:
 
 print(f"Normalized embeddings saved to: {log_dir}/normalized_embeddings.tsv")
 
+# save metadata to metadata.tsv
+with open(os.path.join(log_dir, 'metadata.tsv'), "w") as f:
+    f.write("Meme\tIndex\n")  # TSV header
+    for i, meme in enumerate(tqdm(memes, desc="Writing token metadata")):
+        f.write(f"{meme}\t{i}\n")
+
 # %%
 
 
@@ -156,18 +168,18 @@ metadata = []
 with open(os.path.join(log_dir, 'metadata.tsv'), 'r') as f:
     next(f)  # Skip header
     for line in f:
-        meme, name = line.strip().split('\t')
-        metadata.append((meme, name))
+        meme, index = line.strip().split('\t')
+        metadata.append((meme, index))
 
 # Drop duplicates based on meme text
 unique_data = []
 unique_embeddings = []
 seen_memes = set()
 
-for i, (meme, name) in enumerate(metadata):
+for i, (meme, index) in enumerate(metadata):
     if meme not in seen_memes:
         seen_memes.add(meme)
-        unique_data.append((meme, name))
+        unique_data.append((meme, index))
         unique_embeddings.append(embeddings[i])
 
 # Convert to numpy arrays
@@ -183,19 +195,37 @@ dragons = [
     {
         "name": "Republican",
         "color": "#ff0000",  # Red
-        "memes": ["Lower taxes", "Protect the Second Amendment", "I support Trump", "Smaller government", "Free market capitalism"]
+        "memes": [
+            "Build the wall",
+            "Stop the steal",
+            "Taxation is theft",
+            "Guns don't kill people, people do",
+            "America First",
+            "Back the blue",
+            "Drain the swamp",
+            "Make America Great Again",
+            "End woke culture",
+            "Keep men out of women's sports"
+        ]
     },
     {
         "name": "Democrat", 
         "color": "#0000ff",  # Blue
-        "memes": ["Universal healthcare", "Climate change is real", "I support Biden", "Social safety net", "Progressive policies"]
-    },
-    # {
-    #     "name": "Libertarian",
-    #     "color": "#00ff00",  # Green
-    #     "memes": ["I am a libertarian", "Minimal government", "Free markets", "Individual liberty", "Constitutional rights"]
-    # }
+        "memes": [
+            "Healthcare is a human right",
+            "Black Lives Matter",
+            "Protect trans kids",
+            "No justice, no peace",
+            "Tax the rich",
+            "Ban assault weapons",
+            "Green New Deal",
+            "Reproductive rights are human rights",
+            "Love is love",
+            "Science is real"
+        ]
+    }
 ]
+
 
 # Calculate average embeddings for each dragon
 dragon_positions = {}
@@ -244,16 +274,29 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 
 # Define range of perplexity values to test
-perplexity_values = [30, 40, 50]
+perplexity_values = [10]
+
+# Sample random subset of ~500 memes for t-SNE
+sample_size = min(1500, len(unique_embeddings))
+print(f"Sampling {sample_size} memes from {len(unique_embeddings)} total memes for t-SNE")
+
+# Create random indices for sampling
+np.random.seed(42)  # For reproducibility
+sample_indices = np.random.choice(len(unique_embeddings), sample_size, replace=False)
+
+# Sample the embeddings and metadata
+sampled_embeddings = unique_embeddings[sample_indices]
+sampled_data = [unique_data[i] for i in sample_indices]
+sampled_similarities = {dragon["name"]: dragon_similarities[dragon["name"]][sample_indices] for dragon in dragons}
 
 # Apply PCA to reduce dimensionality before t-SNE
 print("Applying PCA to reduce dimensionality...")
-print(f"Original embedding dimensions: {unique_embeddings.shape[1]}")
+print(f"Original embedding dimensions: {sampled_embeddings.shape[1]}")
 
 # Reduce to 50 dimensions (or 100 if you prefer)
-n_components = min(50, unique_embeddings.shape[1])
+n_components = min(50, sampled_embeddings.shape[1])
 pca = PCA(n_components=n_components, random_state=42)
-embeddings_pca = pca.fit_transform(unique_embeddings)
+embeddings_pca = pca.fit_transform(sampled_embeddings)
 
 print(f"PCA reduced dimensions: {embeddings_pca.shape[1]}")
 print(f"Explained variance ratio: {pca.explained_variance_ratio_.sum():.4f}")
@@ -262,7 +305,7 @@ print(f"Explained variance ratio: {pca.explained_variance_ratio_.sum():.4f}")
 fig, axes = plt.subplots(2, 4, figsize=(24, 12))
 axes = axes.flatten()
 
-for idx, perplexity in enumerate(perplexity_values):
+for idx, perplexity in enumerate(tqdm(perplexity_values)):
     if idx >= len(axes):
         break
         
@@ -274,13 +317,11 @@ for idx, perplexity in enumerate(perplexity_values):
     
     # Plot each point multiple times - once for each dragon
     # Each point gets drawn with the color of each dragon and size proportional to connection strength
-    for i, (meme, name) in enumerate(unique_data):
+    for i, (meme, index) in enumerate(sampled_data):
         for dragon in dragons:
             # Get the connection strength to this dragon
-            intensity = dragon_similarities[dragon["name"]][i]
-            
-
-            size =  10 + intensity * 500
+            intensity = sampled_similarities[dragon["name"]][i]
+        
             
             # Convert hex color to RGB
             from matplotlib.colors import to_rgb
@@ -288,16 +329,17 @@ for idx, perplexity in enumerate(perplexity_values):
             
             # Plot this point with this dragon's color and size
             ax.scatter(embeddings_2d[i, 0], embeddings_2d[i, 1], 
-                       alpha=0.6, s=size, c=[dragon_rgb], 
+                       alpha=max(0, intensity/2), s=140, c=[dragon_rgb], 
                        label=f"{dragon['name']} connection" if i == 0 else "")
     
     # Add a few sample labels (not all to avoid clutter)
-    sample_indices = np.random.choice(len(unique_data), min(30, len(unique_data)), replace=False)
-    for i in sample_indices:
-        meme, name = unique_data[i]
-        label = meme[:20] + "..." if len(meme) > 20 else meme
+    label_indices = np.random.choice(len(sampled_data), min(30, len(sampled_data)), replace=False)
+    for i in label_indices:
+        meme, index = sampled_data[i]
+        # label = meme
+        label = meme[:20] if len(meme) > 20 else meme
         ax.annotate(label, (embeddings_2d[i, 0], embeddings_2d[i, 1]), 
-                    fontsize=10, alpha=0.5)
+                    fontsize=10, alpha=0.9)
     
     dragon_names = [dragon["name"] for dragon in dragons]
     title = f't-SNE (perplexity={perplexity})\n'
@@ -314,6 +356,11 @@ plt.tight_layout()
 plt.show()
 
 # %%
+
+
+# convert a mean embedding of each dragon to a meme
+
+
 
 # %%
 
@@ -332,5 +379,8 @@ for i, dragon in enumerate(dragons):
 
 plt.tight_layout()
 plt.show()
+
+# %%
+
 
 # %%
