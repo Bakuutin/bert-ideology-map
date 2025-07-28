@@ -4,5 +4,6 @@
 !*.yaml
 !*.md
 !.gitignore
+!plot.png
 *.local.*
 *.local
