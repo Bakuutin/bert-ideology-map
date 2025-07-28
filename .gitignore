@@ -5,5 +5,7 @@
 !*.md
 !.gitignore
 !plot.png
+!distribution.png
+!tim_urban_political_ladder.png
 *.local.*
 *.local
