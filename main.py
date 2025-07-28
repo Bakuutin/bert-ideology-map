@@ -414,3 +414,5 @@ for i, dragon in enumerate(dragons[::-1]):
 
 plt.tight_layout()
 plt.show()
+
+# %%
