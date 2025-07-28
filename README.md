@@ -13,14 +13,11 @@ Each dot represents a **real comment** from `/r/politics` and is placed based on
 | ⬇️ **Low-Rung** | `If you're not with us, you're against us`, `They always lie`, `You can't trust those people` |
 
 
-
-
 ## ⚠️ A Word of Caution ⚠️
 
 Don't be an idiot about this map. This visualization does **NOT** tell you who's smarter, better, or more "correct." It doesn't rank people's worth, and it sure as hell doesn't justify treating those who think differently as stupid or evil. If that's what you're here for, you've already lost the plot
 
 Culture-war identity markers are crudely over-simplified. Politics is broken, and that really scares me. So I often think about how we can do better.To win together as humanity. This repo is part of my musings on the topic.
-
 
 ## Inspiration
 
@@ -29,7 +26,6 @@ Tim Urban's concepts of **"high rung"** and **"low rung"** are part of his **"Th
 The book: [What's Our Problem?](https://waitbutwhy.com/whatsourproblem) by [Tim Urban](https://waitbutwhy.com)
 
 ![Tim Urban's Political Ladder](tim_urban_political_ladder.png)
-
 
 ## Technical Details
 
