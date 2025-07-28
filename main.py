@@ -42,7 +42,7 @@ if os.path.exists('reddit_politics.csv'):
         (df['body'].notna())
     ]
     
-    df_filtered = df_filtered.head(3000)
+    # df_filtered = df_filtered.head(000)
     
     # Extract the body text as memes
     csv_memes = df_filtered['body'].tolist()
@@ -71,9 +71,9 @@ print(f"Total memes loaded: {len(memes)}")
 # Initialize the cached BERT encoder for efficient embedding generation
 # This will cache embeddings to avoid recomputing the same memes
 
-# model_name = "bert-base-uncased"
-# model_name = "output/fine_tuned_bert"
-model_name = "output/politics_finetuned"
+# model_name = "bert-base-uncased" # 110M
+# model_name = "bert-large-uncased" # 340M
+model_name = "output/politics_finetuned" # 110M finetuned on r/politics
 
 encoder = CachedBERTEncoder(model_name=model_name, cache_path=f"output/{model_name.split('/')[-1]}_cache.db")
 
@@ -358,7 +358,186 @@ plt.show()
 # %%
 
 
-# convert a mean embedding of each dragon to a meme
+# Define anarchy-authority axis using meme clusters
+low_rung_pole = [
+    "If you're not with us, you're against us",
+    "They always lie",
+    "That's just what people like them do",
+    "Everyone knows this is true",
+    "You can't trust those people",
+    "Do your own research (but only our sources)",
+    "They're all brainwashed",
+    "It’s common sense",
+    "This is how it's always been",
+    "No point in talking to them"
+]
+
+high_rung_pole = [
+    "What's the best argument against my view?",
+    "Let's define our terms",
+    "I might be wrong",
+    "What evidence would change your mind?",
+    "That’s a good point—I hadn’t considered it",
+    "Let’s separate facts from interpretations",
+    "Could both sides be partially right?",
+    "What are the assumptions behind this belief?",
+    "I'm still thinking this through",
+    "Let's be precise"
+]
+
+
+# Calculate average embeddings for each pole
+low_rung_embeddings = []
+for meme in low_rung_pole:
+    low_rung_embeddings.append(encoder.encode(meme).squeeze().numpy())
+low_rung_mean = np.mean(low_rung_embeddings, axis=0)
+
+high_rung_embeddings = []
+for meme in high_rung_pole:
+    high_rung_embeddings.append(encoder.encode(meme).squeeze().numpy())
+high_rung_mean = np.mean(high_rung_embeddings, axis=0)
+
+# Calculate the low-rung vs high-rung axis vector (flipped so low-rung is negative)
+low_high_axis = (low_rung_mean - high_rung_mean) / np.linalg.norm(low_rung_mean - high_rung_mean)
+
+# Calculate projections onto both axes for all memes
+low_high_scores = []
+democratic_republican_scores = []
+
+for embedding in unique_embeddings:
+    # Normalize the embedding
+    norm_embedding = embedding / np.linalg.norm(embedding)
+    
+    # Project onto low-rung vs high-rung axis
+    lh_score = np.dot(norm_embedding, low_high_axis)
+    low_high_scores.append(lh_score)
+    
+    # Project onto democratic-republican axis (using existing dragon vectors)
+    # Use the difference between Democrat and Republican vectors (flipped so Republican is positive)
+    dr_axis = (dragon_vectors["Republican"] - dragon_vectors["Democrat"]) / np.linalg.norm(dragon_vectors["Republican"] - dragon_vectors["Democrat"])
+    dr_score = np.dot(norm_embedding, dr_axis)
+    democratic_republican_scores.append(dr_score)
+
+# Convert to numpy arrays
+low_high_scores = np.array(low_high_scores)
+democratic_republican_scores = np.array(democratic_republican_scores)
+
+# Normalize scores to range -1 to 1 for better visualization
+low_high_scores = (low_high_scores - low_high_scores.min()) / (low_high_scores.max() - low_high_scores.min()) * 2 - 1
+democratic_republican_scores = (democratic_republican_scores - democratic_republican_scores.min()) / (democratic_republican_scores.max() - democratic_republican_scores.min()) * 2 - 1
+
+print(f"Low-Rung vs High-Rung scores range: {low_high_scores.min():.3f} to {low_high_scores.max():.3f}")
+print(f"Democratic-Republican scores range: {democratic_republican_scores.min():.3f} to {democratic_republican_scores.max():.3f}")
+
+# %%
+
+# Create the combined ideological space visualization
+fig, ax = plt.subplots(1, 1, figsize=(12, 10))
+
+# Sample for visualization (same as t-SNE)
+sample_size = min(1500000, len(unique_embeddings))
+np.random.seed(42)
+sample_indices = np.random.choice(len(unique_embeddings), sample_size, replace=False)
+
+sampled_lh_scores = low_high_scores[sample_indices]
+sampled_dr_scores = democratic_republican_scores[sample_indices]
+sampled_data = [unique_data[i] for i in sample_indices]
+
+# Create color mapping based on both axes
+colors = []
+for i in range(len(sampled_lh_scores)):
+    # Map low-rung vs high-rung to red-green (red = low-rung, green = high-rung)
+    # Map democratic-republican to blue-yellow (blue = democrat, yellow = republican)
+    # lh_val = 0 # (sampled_lh_scores[i] + 1) / 2  # Normalize to 0-1
+    # dr_val = (sampled_dr_scores[i] + 1) / 2  # Normalize to 0-1
+
+    blueness = (sampled_dr_scores[i] + 1) / 2
+    redness = 1 - blueness
+    
+    
+    # Combine colors (simplified approach)
+    color = (redness, 0, blueness)
+    colors.append(color)
+
+# Plot points
+ax.scatter(sampled_lh_scores, sampled_dr_scores, c=colors, alpha=0.7, s=50)
+
+# Add quadrant labels
+ax.axhline(y=0, color='black', linestyle='-', alpha=0.3)
+ax.axvline(x=0, color='black', linestyle='-', alpha=0.3)
+
+# Add quadrant annotations
+ax.text(0.2, 0.8, 'High-Rung\nDemocrat', transform=ax.transAxes, ha='center', va='center', 
+        bbox=dict(boxstyle="round,pad=0.3", facecolor='lightgreen', alpha=0.7))
+ax.text(0.2, 0.2, 'Low-Rung\nDemocrat', transform=ax.transAxes, ha='center', va='center',
+        bbox=dict(boxstyle="round,pad=0.3", facecolor='lightblue', alpha=0.7))
+ax.text(0.8, 0.8, 'High-Rung\nRepublican', transform=ax.transAxes, ha='center', va='center',
+        bbox=dict(boxstyle="round,pad=0.3", facecolor='lightyellow', alpha=0.7))
+ax.text(0.8, 0.2, 'Low-Rung\nRepublican', transform=ax.transAxes, ha='center', va='center',
+        bbox=dict(boxstyle="round,pad=0.3", facecolor='lightcoral', alpha=0.7))
+
+# Add evenly distributed labels with spacing to avoid overlap
+def get_label_indices(x_coords, y_coords, max_labels=40, min_distance=30):
+    """Select label indices with minimum distance between them"""
+    selected_indices = []
+    
+    # Sort points by distance from center to ensure good coverage
+    center_x, center_y = np.mean(x_coords), np.mean(y_coords)
+    distances = np.sqrt((x_coords - center_x)**2 + (y_coords - center_y)**2)
+    sorted_indices = np.argsort(distances)
+    
+    for idx in sorted_indices:
+        if len(selected_indices) >= max_labels:
+            break
+            
+        # Check if this point is far enough from already selected points
+        too_close = False
+        for selected_idx in selected_indices:
+            dist = abs(y_coords[idx] - y_coords[selected_idx])
+            if dist < min_distance:
+                too_close = True
+                break
+        
+        if not too_close:
+            selected_indices.append(idx)
+    
+    return selected_indices
+
+# label_indices = get_label_indices(sampled_lh_scores, sampled_dr_scores, max_labels=140, min_distance=0.05)
+
+# for i in label_indices:
+#     meme, index = sampled_data[i]
+#     max_length = 100
+#     label = meme[:max_length] if len(meme) > max_length else meme
+#     ax.annotate(label, (sampled_lh_scores[i], sampled_dr_scores[i]), 
+#                 fontsize=8, alpha=0.8, xytext=(5, 0), textcoords='offset points')
+
+ax.set_xlabel('Democrat ← → Republican')
+ax.set_ylabel('Low-Rung ← → High-Rung')
+ax.set_title('Ideological Space: Low-Rung vs High-Rung vs Democratic-Republican')
+ax.grid(True, alpha=0.5)
+
+# Center the plot by setting equal axis limits
+x_min, x_max = sampled_lh_scores.min(), sampled_lh_scores.max()
+y_min, y_max = sampled_dr_scores.min(), sampled_dr_scores.max()
+
+# Add some padding and ensure square aspect ratio
+padding = 0.5
+x_range = x_max - x_min
+y_range = y_max - y_min
+max_range = max(x_range, y_range)
+
+x_center = (x_min + x_max) / 2
+y_center = (y_min + y_max) / 2
+
+ax.set_xlim(x_center - max_range/2 - padding, x_center + max_range/2 + padding)
+ax.set_ylim(y_center - max_range/2 - padding, y_center + max_range/2 + padding)
+
+# Set equal aspect ratio to make it square
+ax.set_aspect('equal')
+
+plt.tight_layout()
+plt.show()
 
 
 

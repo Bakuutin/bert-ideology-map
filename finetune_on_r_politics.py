@@ -197,7 +197,7 @@ class PoliticsBERTModel(torch.nn.Module):
 
 # %%
 # Training function
-def train_politics_model(model, train_dataset, val_dataset, output_dir, epochs=3, batch_size=8):
+def train_politics_model(model, train_dataset, val_dataset, output_dir, epochs=3, batch_size=80):
     """Train the model on politics comments."""
     
     # Create output directory
